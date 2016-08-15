@@ -1,0 +1,11 @@
+---
+# .osx from (https://github.com/mathiasbynens/dotfiles)
+- name: Copy .macos file into place
+  copy:
+    src: ../files/dot-osx
+    dest: ~/.macos
+    mode: 0700
+
+- name: Run .macos
+  ignore_errors: yes
+  shell: ~/.macos

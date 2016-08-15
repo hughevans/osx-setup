@@ -1,0 +1,78 @@
+---
+- hosts: all
+
+  vars:
+    home: "{{ lookup('env','HOME') }}"
+
+    brews:
+      - ack
+      - awscli
+      - freetds
+      - git
+      - mysql
+      - node
+      - nodenv
+      - openssl
+      - rbenv
+      - redis
+      - ruby-build
+      - tmux
+      - vim
+      - wget
+      - phantomjs
+      - imagemagick
+    casks:
+      - atom
+      - hipchat
+      - iterm2
+      - rowanj-gitx
+      - sequel-pro
+      - skype
+      - spectacle
+      - transmission
+      - vagrant
+      - virtualbox
+      - vlc
+
+  tasks:
+  - name: Install brews
+    homebrew: name={{item}} state=present
+    with_items: brews
+
+  - name: Create home LaunchAgents directory
+    file: path={{ home }}/Library/LaunchAgents state=directory
+
+  - name: Start services at login
+    file: src=/usr/local/opt/{{ item }}/homebrew.mxcl.{{ item }}.plist path=~/Library/LaunchAgents/homebrew.mxcl.{{ item }}.plist state=link force=yes
+    with_items:
+      - mysql
+      - redis
+
+  - name: Setup launch agents for services
+    command: launchctl load {{ home }}/Library/LaunchAgents/homebrew.mxcl.{{ item }}.plist
+    with_items:
+      - mysql
+      - redis
+
+  - name: Install brew cask
+    shell: 'brew install caskroom/cask/brew-cask'
+
+  - name: Install casks
+    homebrew_cask: name={{item}} state=present
+    with_items: casks
+
+  - include: zsh.yml
+    tags: zsh
+    when: use_zsh
+
+  - include: dot-osx.yml
+    tags: dot-osx
+    when: use_dot_osx
+
+  # Update, upgrade and cleanup brews.
+
+  - name: Update and upgrade brews
+    homebrew: update_homebrew=yes upgrade_all=yes
+
+  - name: Cleanup brews
+    shell: 'brew cleanup'
