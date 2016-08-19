@@ -23,6 +23,7 @@
       - imagemagick
     casks:
       - atom
+      - flux
       - hipchat
       - iterm2
       - rowanj-gitx
