@@ -23,6 +23,7 @@
       - imagemagick
     casks:
       - atom
+      - cloudup
       - flux
       - hipchat
       - iterm2
