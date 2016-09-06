@@ -9,7 +9,7 @@
       - awscli
       - freetds
       - git
-      - mysql
+      - mysql56
       - node
       - nodenv
       - openssl
