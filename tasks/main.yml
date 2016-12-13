@@ -27,7 +27,6 @@
       - atom
       - cloudup
       - flux
-      - hipchat
       - iterm2
       - rowanj-gitx
       - sequel-pro
@@ -42,7 +41,7 @@
   tasks:
   - name: Install brews
     homebrew: name={{item}} state=present
-    with_items: brews
+    with_items: "{{ brews }}"
 
   - name: Create home LaunchAgents directory
     file: path={{ home }}/Library/LaunchAgents state=directory
@@ -64,15 +63,13 @@
 
   - name: Install casks
     homebrew_cask: name={{item}} state=present
-    with_items: casks
+    with_items: "{{ casks }}"
 
   - include: zsh.yml
     tags: zsh
-    when: use_zsh
 
   - include: dot-osx.yml
     tags: dot-osx
-    when: use_dot_osx
 
   # Update, upgrade and cleanup brews.
 

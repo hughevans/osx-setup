@@ -9,7 +9,6 @@
 
 - name: Use zsh
   shell: chsh -s /usr/local/bin/zsh
-  when: use_zsh
 
 - stat: path=~/.oh-my-zsh
   register: oh_my_zsh
